@@ -1,73 +1,228 @@
-/*1. Acceso al DOM básico
-Crea una página con un <h1> y un párrafo.
-Desde JavaScript, cambia el texto del <h1> usando getElementById y el color del párrafo
-con getElementsByTagName.*/
+document.addEventListener("DOMContentLoaded", () => {
 
-const head=document.getElementById("head");
-head.textContent="Texto cambiado con js";
+    /*--------------------------------------------------------------
+     1. Acceso al DOM básico
+    --------------------------------------------------------------*/
+    const head = document.getElementById("head");
+    head.textContent = "Texto cambiado con JS";
 
-const parrafo=document.getElementsByTagName("p")[0];
-parrafo.style.color="green";
+    const parrafo = document.getElementsByTagName("p")[0];
+    parrafo.style.color = "green";
 
 
-/*2. Modificación de varios elementos
-Crea tres párrafos con la clase texto.
-Usa getElementsByClassName para recorrerlos con un for y cambiar el color de fondo a
-gris.*/
+    /*--------------------------------------------------------------
+     2. Modificación de varios elementos
+    --------------------------------------------------------------*/
+    const parrafos = document.getElementsByClassName("texto");
+    for (let i = 0; i < parrafos.length; i++) {
+        parrafos[i].style.backgroundColor = "lightgray";
+    }
 
-const parrafos=document.getElementsByClassName("texto");
-for(let i=0;i<parrafos.length;i++){
-    parrafos[i].style.backgroundColor="grey";
-}
 
-/*3. Selección con querySelector
-Usa querySelector para seleccionar el primer <div> con clase .caja y cambia su borde y
-fondo con style.*/
+    /*--------------------------------------------------------------
+     3. Selección con querySelector
+    --------------------------------------------------------------*/
+    const caja = document.querySelector(".caja");
+    caja.style.border = "2px solid black";
+    caja.style.backgroundColor = "#f5f5f5";
 
-const caja=document.querySelector(".caja"); //seleccionamos la clase "caja" con .
-caja.style.border="100px solid blue"; //Especificar grosor y tipo de linea sino no lo pinta
-caja.style.backgroundColor="yellow";
 
-/*4. querySelectorAll y forEach
-Crea tres botones con clase btn-dom.
-Recógelos con querySelectorAll y cambia el texto de todos ellos a “DOM listo ”.*/
+    /*--------------------------------------------------------------
+     4. querySelectorAll y forEach
+    --------------------------------------------------------------*/
+    document.querySelectorAll(".btn-dom").forEach(btn => btn.textContent = "DOM listo");
 
-const botones=document.querySelectorAll(".btn-dom");//Se crea la variable donde se guardaran todos los elementos con la clase btn-dom
-botones.forEach(function(boton){
-    boton.textContent="DOM listo";//Recorremos el array que nso ofrece querySelectorALl
-                                  // y vamos cambiando el contenido de cada elemento 
+
+    /*--------------------------------------------------------------
+     5. Colecciones vivas vs estáticas
+    --------------------------------------------------------------*/
+    const coleccionViva = document.getElementsByTagName("li");
+    const coleccionEstatica = document.querySelectorAll("li");
+    console.log("ANTES:", coleccionViva.length, coleccionEstatica.length);
+
+    const nuevoElemento = document.createElement("li");
+    nuevoElemento.textContent = "Elemento nuevo";
+    document.getElementById("lista").appendChild(nuevoElemento);
+    console.log("DESPUÉS:", coleccionViva.length, coleccionEstatica.length);
+
+
+    /*--------------------------------------------------------------
+     6. Crear elementos dinámicamente
+    --------------------------------------------------------------*/
+    const parrafoDinamico = document.createElement("p");
+    parrafoDinamico.textContent = "Creado dinámicamente";
+    document.body.appendChild(parrafoDinamico);
+
+
+    /*--------------------------------------------------------------
+     7. Crear nodos de texto
+    --------------------------------------------------------------*/
+    const contenedor = document.getElementById("contenedor");
+    const textoNodo = document.createTextNode("Texto insertado en el contenedor");
+    contenedor.appendChild(textoNodo);
+
+
+    /*--------------------------------------------------------------
+     8. Añadir atributos a un elemento
+    --------------------------------------------------------------*/
+    const img = document.createElement("img");
+    img.setAttribute("src", "https://via.placeholder.com/150");
+    img.setAttribute("alt", "Imagen generada por JS");
+    document.body.appendChild(img);
+
+
+    /*--------------------------------------------------------------
+     9. Crear estructura completa (tarjeta)
+    --------------------------------------------------------------*/
+    const contenedorTarjeta = document.createElement("div");
+
+    const h5 = document.createElement("h5");
+    h5.textContent = "Título de la tarjeta";
+
+    const pTarjeta = document.createElement("p");
+    pTarjeta.textContent = "Este es el texto de la tarjeta, generado dinámicamente";
+
+    const boton = document.createElement("button");
+    boton.textContent = "Click aquí";
+    boton.className = "btn btn-primary"; // opcional estilo Bootstrap
+
+    contenedorTarjeta.append(h5, pTarjeta, boton);
+    document.body.appendChild(contenedorTarjeta);
+
+
+    /*--------------------------------------------------------------
+     10. Insertar elementos en distintas posiciones
+    --------------------------------------------------------------*/
+    const listaPos = document.getElementById("listaPosiciones");
+
+    const liPrepend = document.createElement("li");
+    liPrepend.textContent = "Añadido al inicio";
+    listaPos.prepend(liPrepend);
+
+    const liAppend = document.createElement("li");
+    liAppend.textContent = "Añadido al final";
+    listaPos.append(liAppend);
+
+    const divBefore = document.createElement("div");
+    divBefore.textContent = "Elemento antes del UL";
+    listaPos.before(divBefore);
+
+    const divAfter = document.createElement("div");
+    divAfter.textContent = "Elemento después del UL";
+    listaPos.after(divAfter);
+
+
+    /*--------------------------------------------------------------
+     11. Reemplazar y eliminar
+    --------------------------------------------------------------*/
+    const parrafoEliminar = document.getElementById("parrafo-eliminar");
+    document.getElementById("btn-eliminar").onclick = () => {
+        parrafoEliminar.remove();
+        console.log("Párrafo eliminado");
+    };
+
+    document.getElementById("btn-reemplazar").onclick = () => {
+        const nuevoP = document.createElement("p");
+        nuevoP.textContent = "Parrafo reemplazado";
+        parrafoEliminar.replaceWith(nuevoP);
+    };
+
+
+    /*--------------------------------------------------------------
+     13-14. Lista dinámica con botón
+    --------------------------------------------------------------*/
+    const listaD = document.getElementById("lista-dinamica");
+
+    document.getElementById("btn-agregar").onclick = () => {
+        const li = document.createElement("li");
+        li.textContent = "Elemento agregado";
+        listaD.appendChild(li);
+    };
+
+    document.getElementById("btn-eliminar-ultimo").onclick = () => {
+        if (listaD.lastElementChild) listaD.lastElementChild.remove();
+    };
+
+
+    /*--------------------------------------------------------------
+     15. Numerar elementos automáticamente
+    --------------------------------------------------------------*/
+    document.querySelectorAll(".item").forEach((item, index) => {
+        item.textContent = `Elemento ${index + 1}`;
+    });
+
+
+    /*--------------------------------------------------------------
+     16. Crear galería desde JSON local
+    --------------------------------------------------------------*/
+    const imagenes = [
+        { titulo: "Montaña", url: "https://via.placeholder.com/150/1" },
+        { titulo: "Lago", url: "https://via.placeholder.com/150/2" },
+        { titulo: "Bosque", url: "https://via.placeholder.com/150/3" }
+    ];
+
+    const galeria = document.getElementById("galeria");
+    imagenes.forEach(imgObj => {
+        const card = document.createElement("div");
+        card.style.border = "1px solid black";
+        card.style.padding = "5px";
+        card.style.marginBottom = "5px";
+
+        const h5 = document.createElement("h5");
+        h5.textContent = imgObj.titulo;
+
+        const img = document.createElement("img");
+        img.src = imgObj.url;
+        img.style.width = "100%";
+
+        card.append(h5, img);
+        galeria.appendChild(card);
+    });
+
+
+    /*--------------------------------------------------------------
+     17-20. Usuarios API JSONPlaceholder
+    --------------------------------------------------------------*/
+    const contUsuarios = document.getElementById("usuarios");
+    let ultimoUsuario = null;
+
+    document.getElementById("btn-cargar").onclick = async () => {
+        const res = await fetch("https://jsonplaceholder.typicode.com/users");
+        const data = await res.json();
+
+        contUsuarios.innerHTML = "";
+
+        data.forEach(user => {
+            const card = document.createElement("div");
+            card.style.border = "1px solid black";
+            card.style.padding = "5px";
+            card.style.marginBottom = "5px";
+
+            const h5 = document.createElement("h5");
+            h5.textContent = user.name;
+
+            const p = document.createElement("p");
+            p.textContent = `Email: ${user.email}`;
+
+            const ciudad = document.createElement("p");
+            ciudad.textContent = `Ciudad: ${user.address.city}`;
+
+            const btnEliminar = document.createElement("button");
+            btnEliminar.textContent = "Eliminar";
+            btnEliminar.onclick = () => card.remove();
+
+            card.append(h5, p, ciudad, btnEliminar);
+            contUsuarios.appendChild(card);
+
+            ultimoUsuario = card;
+        });
+    };
+
+    document.getElementById("btn-clonar-ultimo").onclick = () => {
+        if (ultimoUsuario) {
+            const clon = ultimoUsuario.cloneNode(true);
+            contUsuarios.appendChild(clon);
+        }
+    };
 
 });
-
-/*5. Comparación entre colecciones vivas y estáticas
-Crea una lista <ul id="lista"> con dos <li>.
-Muestra por consola la diferencia entre getElementsByTagName("li") (viva) y
-querySelectorAll("li") (estática) al agregar un nuevo elemento.*/
-
-const coleccionViva=document.getElementsByTagName("li"); //Colección viva
-const coleccionEstatica=document.querySelectorAll("li"); //Colección estática
-console.log(coleccionViva,coleccionEstatica);
-
-//Agrego un elemtento nuevo para ver la diferencia
-const nuevoElemento=document.createElement("li");
-nuevoElemento.textContent="Elemento nuevo";
-const lista=document.getElementById("lista");
-lista.appendChild(nuevoElemento);
-
-//Hago un nuevo console.log y veo que solo ha cambiado la coleccion viva.
-console.log(coleccionViva,coleccionEstatica);
-
-/*6. Crear elementos dinámicamente
-Usa createElement() para crear un <p> con texto "Creado dinámicamente" y añádelo al
-body con appendChild().*/
-
-document.addEventListener("DOMContentLoaded", function() {//Si no ponemos esta linea,el DOM no se carga entero por lo que los cambioas anteriores no se ven
-    const parrafo = document.createElement("p");//A partir de aqui,se crea el elemento,se pone el texto,y lo añadimos
-    parrafo.textContent = "Creado dinámicamente";
-    document.body.appendChild(parrafo);
-});
-
-/*7. Crear nodos de texto
-Crea un <div id="contenedor">.
-Genera un nodo de texto con createTextNode() y añádelo dentro del div.*/
-
